@@ -15,6 +15,12 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/accounts")
 class AccountRC @Autowired constructor(private val accountDS: AccountDS) : AbstractAppRC() {
 
+    @Operation(summary = "Get all accounts", tags = [AppConst.SWAGGER_TAG_ACCOUNT])
+    @GetMapping("/")
+    fun getAll(): ResponseEntity<ApiResponse<List<AccountDTO>>> {
+        return ResponseEntity(getResponse(accountDS.getAll()), HttpStatus.OK)
+    }
+
     @Operation(summary = "Get account by id", tags = [AppConst.SWAGGER_TAG_ACCOUNT])
     @GetMapping("/{id}")
     fun find(@PathVariable id: Long): ResponseEntity<ApiResponse<AccountDTO>> {
@@ -29,12 +35,6 @@ class AccountRC @Autowired constructor(private val accountDS: AccountDS) : Abstr
     @GetMapping("/category/{categoryId}")
     fun findAll(@PathVariable categoryId: Long): ResponseEntity<ApiResponse<List<AccountDTO>?>> {
         return ResponseEntity(getResponse(accountDS.findAll(categoryId)), HttpStatus.OK)
-    }
-
-    @Operation(summary = "Get all accounts", tags = [AppConst.SWAGGER_TAG_ACCOUNT])
-    @GetMapping("/")
-    fun getAll(@PathVariable id: Long): ResponseEntity<ApiResponse<List<AccountDTO>>> {
-        return ResponseEntity(getResponse(accountDS.getAll()), HttpStatus.OK)
     }
 
     @Operation(summary = "Create account", tags = [AppConst.SWAGGER_TAG_ACCOUNT])

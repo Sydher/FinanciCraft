@@ -15,6 +15,12 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/categories")
 class CategoryRC @Autowired constructor(private val categoryDS: CategoryDS) : AbstractAppRC() {
 
+    @Operation(summary = "Get all categories", tags = [AppConst.SWAGGER_TAG_CATEGORY])
+    @GetMapping("/")
+    fun getAll(): ResponseEntity<ApiResponse<List<CategoryDTO>>> {
+        return ResponseEntity(getResponse(categoryDS.getAll()), HttpStatus.OK)
+    }
+
     @Operation(summary = "Get category by id", tags = [AppConst.SWAGGER_TAG_CATEGORY])
     @GetMapping("/{id}")
     fun find(@PathVariable id: Long): ResponseEntity<ApiResponse<CategoryDTO>> {
@@ -23,12 +29,6 @@ class CategoryRC @Autowired constructor(private val categoryDS: CategoryDS) : Ab
         } catch (e: CategoryNotFoundException) {
             ResponseEntity(HttpStatus.NOT_FOUND)
         }
-    }
-
-    @Operation(summary = "Get all categories", tags = [AppConst.SWAGGER_TAG_CATEGORY])
-    @GetMapping("/")
-    fun getAll(@PathVariable id: Long): ResponseEntity<ApiResponse<List<CategoryDTO>>> {
-        return ResponseEntity(getResponse(categoryDS.getAll()), HttpStatus.OK)
     }
 
     @Operation(summary = "Create category", tags = [AppConst.SWAGGER_TAG_CATEGORY])
