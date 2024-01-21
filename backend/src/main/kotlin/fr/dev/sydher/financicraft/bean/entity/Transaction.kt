@@ -1,18 +1,23 @@
 package fr.dev.sydher.financicraft.bean.entity
 
 import jakarta.persistence.*
+import java.time.LocalDate
 
 @Entity
-data class Account(
+data class Transaction(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
     var name: String,
-    var balance: Double,
+    var amount: Double,
+    var date: LocalDate,
 
     @ManyToOne
-    var category: Category? = null
+    var account: Account? = null,
+
+    @ManyToMany
+    var categories: List<Category>? = null
 
 )

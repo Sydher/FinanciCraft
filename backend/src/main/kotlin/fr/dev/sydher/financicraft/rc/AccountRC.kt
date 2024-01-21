@@ -1,7 +1,7 @@
 package fr.dev.sydher.financicraft.rc
 
 import fr.dev.sydher.financicraft.bean.ApiResponse
-import fr.dev.sydher.financicraft.bean.entity.Account
+import fr.dev.sydher.financicraft.bean.dto.AccountDTO
 import fr.dev.sydher.financicraft.bean.exception.AccountNotFoundException
 import fr.dev.sydher.financicraft.ds.AccountDS
 import fr.dev.sydher.financicraft.utils.AppConst
@@ -17,31 +17,35 @@ class AccountRC @Autowired constructor(private val accountDS: AccountDS) : Abstr
 
     @Operation(summary = "Get account by id", tags = [AppConst.SWAGGER_TAG_ACCOUNT])
     @GetMapping("/{id}")
-    fun find(@PathVariable id: Long): ResponseEntity<ApiResponse<Account>> {
-        return ResponseEntity(getResponse(accountDS.find(id)), HttpStatus.OK)
+    fun find(@PathVariable id: Long): ResponseEntity<ApiResponse<AccountDTO>> {
+        return try {
+            ResponseEntity(getResponse(accountDS.find(id)), HttpStatus.OK)
+        } catch (e: AccountNotFoundException) {
+            ResponseEntity(HttpStatus.NOT_FOUND)
+        }
     }
 
     @Operation(summary = "Get all accounts in a category", tags = [AppConst.SWAGGER_TAG_ACCOUNT])
-    @GetMapping("/category/{category}")
-    fun findAll(@PathVariable category: String): ResponseEntity<ApiResponse<List<Account>>> {
-        return ResponseEntity(getResponse(accountDS.findAll(category)), HttpStatus.OK)
+    @GetMapping("/category/{categoryId}")
+    fun findAll(@PathVariable categoryId: Long): ResponseEntity<ApiResponse<List<AccountDTO>?>> {
+        return ResponseEntity(getResponse(accountDS.findAll(categoryId)), HttpStatus.OK)
     }
 
     @Operation(summary = "Get all accounts", tags = [AppConst.SWAGGER_TAG_ACCOUNT])
     @GetMapping("/")
-    fun getAll(@PathVariable id: Long): ResponseEntity<ApiResponse<List<Account>>> {
+    fun getAll(@PathVariable id: Long): ResponseEntity<ApiResponse<List<AccountDTO>>> {
         return ResponseEntity(getResponse(accountDS.getAll()), HttpStatus.OK)
     }
 
     @Operation(summary = "Create account", tags = [AppConst.SWAGGER_TAG_ACCOUNT])
     @PostMapping("/")
-    fun create(@RequestBody account: Account): ResponseEntity<ApiResponse<Account>> {
+    fun create(@RequestBody account: AccountDTO): ResponseEntity<ApiResponse<AccountDTO>> {
         return ResponseEntity(getResponse(accountDS.save(account)), HttpStatus.CREATED)
     }
 
     @Operation(summary = "Update account", tags = [AppConst.SWAGGER_TAG_ACCOUNT])
     @PutMapping("/{id}")
-    fun update(@PathVariable id: String, @RequestBody account: Account): ResponseEntity<ApiResponse<Account>> {
+    fun update(@PathVariable id: String, @RequestBody account: AccountDTO): ResponseEntity<ApiResponse<AccountDTO>> {
         return ResponseEntity(getResponse(accountDS.save(account)), HttpStatus.OK)
     }
 

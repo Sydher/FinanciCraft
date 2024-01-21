@@ -1,51 +1,76 @@
 package fr.dev.sydher.financicraft.dsimpl
 
-import fr.dev.sydher.financicraft.bean.entity.Account
+import fr.dev.sydher.financicraft.bean.dto.AccountDTO
 import fr.dev.sydher.financicraft.bean.exception.AccountNotFoundException
 import fr.dev.sydher.financicraft.ds.AccountDS
+import fr.dev.sydher.financicraft.mapper.AccountMapper.toDTO
+import fr.dev.sydher.financicraft.mapper.AccountMapper.toEntity
 import fr.dev.sydher.financicraft.repository.AccountRepository
+import fr.dev.sydher.financicraft.repository.CategoryRepository
 import fr.dev.sydher.financicraft.utils.AppConst
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import kotlin.jvm.optionals.getOrNull
 
 @Service
-class AccountDSImpl @Autowired constructor(private val accountRepository: AccountRepository) : AccountDS {
+class AccountDSImpl @Autowired constructor(
+    private val accountRepository: AccountRepository,
+    private val categoryRepository: CategoryRepository
+) : AccountDS {
 
     companion object {
         private val log = LoggerFactory.getLogger(AccountDSImpl::class.java)
     }
 
-    override fun find(id: Long): Account {
-        val account = this.accountRepository.findById(id)
+    override fun find(id: Long): AccountDTO {
+        val account = accountRepository.findById(id)
         if (account.isPresent) {
-            return account.get()
+            return account.get().toDTO()
         }
-        log.error(AppConst.MSG_ERR_ACCOUNT_NOT_FOUND, id)
-        throw AccountNotFoundException(AppConst.ERR_ACCOUNT_NOT_FOUND)
+        log.error(AppConst.MSG_ERR_ITEM_NOT_FOUND, "Account", id)
+        throw AccountNotFoundException(AppConst.ERR_ITEM_NOT_FOUND)
     }
 
-    override fun findAll(category: String): List<Account> {
-        return this.accountRepository.findAllByCategory(category)
+    override fun findAll(categoryId: Long): List<AccountDTO>? {
+        var acc: List<AccountDTO>? = null
+        categoryRepository.findById(categoryId).ifPresentOrElse(
+            {
+                val accounts = accountRepository.findAllByCategory(it)
+                acc = accounts.map { account -> account.toDTO() }
+            },
+            {
+                log.warn(
+                    AppConst.MSG_WARN_ITEM_NOT_FOUND_BY_CAT,
+                    "Account",
+                    categoryId
+                );
+            }
+        )
+        return acc
     }
 
-    override fun getAll(): List<Account> {
-        return this.accountRepository.findAll()
+    override fun getAll(): List<AccountDTO> {
+        val accounts = accountRepository.findAll()
+        return accounts.map { it.toDTO() }
     }
 
-    override fun save(account: Account): Account {
-        return this.accountRepository.save(account)
+    override fun save(account: AccountDTO): AccountDTO {
+        val toSave = account.toEntity()
+        toSave.category = account.categoryId?.let { categoryRepository.findById(it).getOrNull() }
+        return accountRepository.save(toSave).toDTO()
     }
 
     override fun delete(id: Long) {
-        val account = this.accountRepository.findById(id)
+        val account = accountRepository.findById(id)
         account.ifPresentOrElse(
-            { acc -> this.accountRepository.delete(acc) },
+            { accountRepository.delete(it) },
             {
                 log.error(
-                    AppConst.MSG_ERR_ACCOUNT_NOT_FOUND,
+                    AppConst.MSG_ERR_ITEM_NOT_FOUND,
+                    "Account",
                     id
-                ); throw AccountNotFoundException(AppConst.ERR_ACCOUNT_NOT_FOUND)
+                ); throw AccountNotFoundException(AppConst.ERR_ITEM_NOT_FOUND)
             }
         )
     }

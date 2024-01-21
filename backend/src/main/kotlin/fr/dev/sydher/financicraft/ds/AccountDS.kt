@@ -1,6 +1,6 @@
 package fr.dev.sydher.financicraft.ds
 
-import fr.dev.sydher.financicraft.bean.entity.Account
+import fr.dev.sydher.financicraft.bean.dto.AccountDTO
 import fr.dev.sydher.financicraft.bean.exception.AccountNotFoundException
 
 interface AccountDS {
@@ -12,27 +12,27 @@ interface AccountDS {
      * @throws AccountNotFoundException if the account with the specified id doesn't exist
      */
     @Throws(AccountNotFoundException::class)
-    fun find(id: Long): Account
+    fun find(id: Long): AccountDTO
 
     /**
      * Get all accounts by category.
-     * @param category the category to search from
+     * @param categoryId id of the category to search from
      * @return all accounts on this category
      */
-    fun findAll(category: String): List<Account>
+    fun findAll(categoryId: Long): List<AccountDTO>?
 
     /**
      * Get all accounts.
      * @return all accounts
      */
-    fun getAll(): List<Account>
+    fun getAll(): List<AccountDTO>
 
     /**
      * Creates or updates an account.
      * @param account the account to create/update
      * @return the created/updated account
      */
-    fun save(account: Account): Account
+    fun save(account: AccountDTO): AccountDTO
 
     /**
      * Deletes an account by its identifier
