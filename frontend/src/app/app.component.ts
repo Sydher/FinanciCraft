@@ -4,12 +4,10 @@ import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from "./shared/components/header/header.component";
 
 @Component({
-    selector: 'app-root',
-    standalone: true,
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.scss',
-    imports: [CommonModule, RouterOutlet, HeaderComponent]
+  selector: 'app-root',
+  standalone: true,
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss',
+  imports: [CommonModule, RouterOutlet, HeaderComponent]
 })
-export class AppComponent {
-  title = 'FinanciCraft';
-}
+export class AppComponent { }

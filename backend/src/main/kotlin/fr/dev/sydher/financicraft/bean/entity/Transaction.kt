@@ -1,7 +1,7 @@
 package fr.dev.sydher.financicraft.bean.entity
 
 import jakarta.persistence.*
-import java.time.LocalDate
+import java.util.*
 
 @Entity
 data class Transaction(
@@ -12,7 +12,7 @@ data class Transaction(
 
     var name: String,
     var amount: Double,
-    var date: LocalDate,
+    var date: Date,
 
     @ManyToOne
     var account: Account? = null,

@@ -18,8 +18,9 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { ApiResponseBoolean } from '../model/apiResponseBoolean';
-import { ApiResponseListTransactionDTO } from '../model/apiResponseListTransactionDTO';
+import { ApiResponsePageImplTransactionDTO } from '../model/apiResponsePageImplTransactionDTO';
 import { ApiResponseTransactionDTO } from '../model/apiResponseTransactionDTO';
+import { Pageable } from '../model/pageable';
 import { TransactionDTO } from '../model/transactionDTO';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -59,60 +60,19 @@ export class TransactionService {
 
 
     /**
-     * Delete transaction
-     * 
-     * @param id 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public _delete(id: number, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseBoolean>;
-    public _delete(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseBoolean>>;
-    public _delete(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseBoolean>>;
-    public _delete(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling _delete.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<ApiResponseBoolean>('delete',`${this.basePath}/api/transactions/${encodeURIComponent(String(id))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
      * Create transaction
      * 
      * @param body 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public create(body: TransactionDTO, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseTransactionDTO>;
-    public create(body: TransactionDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseTransactionDTO>>;
-    public create(body: TransactionDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseTransactionDTO>>;
-    public create(body: TransactionDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createTransaction(body: TransactionDTO, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseTransactionDTO>;
+    public createTransaction(body: TransactionDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseTransactionDTO>>;
+    public createTransaction(body: TransactionDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseTransactionDTO>>;
+    public createTransaction(body: TransactionDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling create.');
+            throw new Error('Required parameter body was null or undefined when calling createTransaction.');
         }
 
         let headers = this.defaultHeaders;
@@ -147,19 +107,112 @@ export class TransactionService {
     }
 
     /**
+     * Delete transaction
+     * 
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public deleteTransaction(id: number, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseBoolean>;
+    public deleteTransaction(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseBoolean>>;
+    public deleteTransaction(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseBoolean>>;
+    public deleteTransaction(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling deleteTransaction.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ApiResponseBoolean>('delete',`${this.basePath}/api/transactions/${encodeURIComponent(String(id))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all transactions in an account
+     * 
+     * @param accountId 
+     * @param pageable 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public findAllTransactionByAccount(accountId: number, pageable: Pageable, observe?: 'body', reportProgress?: boolean): Observable<ApiResponsePageImplTransactionDTO>;
+    public findAllTransactionByAccount(accountId: number, pageable: Pageable, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponsePageImplTransactionDTO>>;
+    public findAllTransactionByAccount(accountId: number, pageable: Pageable, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponsePageImplTransactionDTO>>;
+    public findAllTransactionByAccount(accountId: number, pageable: Pageable, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (accountId === null || accountId === undefined) {
+            throw new Error('Required parameter accountId was null or undefined when calling findAllTransactionByAccount.');
+        }
+
+        if (pageable === null || pageable === undefined) {
+            throw new Error('Required parameter pageable was null or undefined when calling findAllTransactionByAccount.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (pageable !== undefined && pageable !== null) {
+            queryParameters = queryParameters.set('pageable', <any>pageable);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ApiResponsePageImplTransactionDTO>('get',`${this.basePath}/api/transactions/account/${encodeURIComponent(String(accountId))}`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get transaction by id
      * 
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public find(id: number, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseTransactionDTO>;
-    public find(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseTransactionDTO>>;
-    public find(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseTransactionDTO>>;
-    public find(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public findTransaction(id: number, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseTransactionDTO>;
+    public findTransaction(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseTransactionDTO>>;
+    public findTransaction(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseTransactionDTO>>;
+    public findTransaction(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling find.');
+            throw new Error('Required parameter id was null or undefined when calling findTransaction.');
         }
 
         let headers = this.defaultHeaders;
@@ -188,83 +241,6 @@ export class TransactionService {
     }
 
     /**
-     * Get all transactions in an account
-     * 
-     * @param accountId 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public findAllByAccount(accountId: number, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseListTransactionDTO>;
-    public findAllByAccount(accountId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseListTransactionDTO>>;
-    public findAllByAccount(accountId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseListTransactionDTO>>;
-    public findAllByAccount(accountId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (accountId === null || accountId === undefined) {
-            throw new Error('Required parameter accountId was null or undefined when calling findAllByAccount.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<ApiResponseListTransactionDTO>('get',`${this.basePath}/api/transactions/account/${encodeURIComponent(String(accountId))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Get all transactions
-     * 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getAll(observe?: 'body', reportProgress?: boolean): Observable<ApiResponseListTransactionDTO>;
-    public getAll(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseListTransactionDTO>>;
-    public getAll(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseListTransactionDTO>>;
-    public getAll(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<ApiResponseListTransactionDTO>('get',`${this.basePath}/api/transactions/`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
      * Update transaction
      * 
      * @param body 
@@ -272,17 +248,17 @@ export class TransactionService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public update(body: TransactionDTO, id: string, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseTransactionDTO>;
-    public update(body: TransactionDTO, id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseTransactionDTO>>;
-    public update(body: TransactionDTO, id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseTransactionDTO>>;
-    public update(body: TransactionDTO, id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateTransaction(body: TransactionDTO, id: string, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseTransactionDTO>;
+    public updateTransaction(body: TransactionDTO, id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseTransactionDTO>>;
+    public updateTransaction(body: TransactionDTO, id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseTransactionDTO>>;
+    public updateTransaction(body: TransactionDTO, id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling update.');
+            throw new Error('Required parameter body was null or undefined when calling updateTransaction.');
         }
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling update.');
+            throw new Error('Required parameter id was null or undefined when calling updateTransaction.');
         }
 
         let headers = this.defaultHeaders;

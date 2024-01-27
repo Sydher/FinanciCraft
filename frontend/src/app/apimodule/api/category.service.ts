@@ -65,13 +65,13 @@ export class CategoryService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public create1(body: CategoryDTO, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseCategoryDTO>;
-    public create1(body: CategoryDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseCategoryDTO>>;
-    public create1(body: CategoryDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseCategoryDTO>>;
-    public create1(body: CategoryDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createCategory(body: CategoryDTO, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseCategoryDTO>;
+    public createCategory(body: CategoryDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseCategoryDTO>>;
+    public createCategory(body: CategoryDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseCategoryDTO>>;
+    public createCategory(body: CategoryDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling create1.');
+            throw new Error('Required parameter body was null or undefined when calling createCategory.');
         }
 
         let headers = this.defaultHeaders;
@@ -112,13 +112,13 @@ export class CategoryService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public delete1(id: number, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseBoolean>;
-    public delete1(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseBoolean>>;
-    public delete1(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseBoolean>>;
-    public delete1(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteCategory(id: number, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseBoolean>;
+    public deleteCategory(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseBoolean>>;
+    public deleteCategory(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseBoolean>>;
+    public deleteCategory(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling delete1.');
+            throw new Error('Required parameter id was null or undefined when calling deleteCategory.');
         }
 
         let headers = this.defaultHeaders;
@@ -153,13 +153,13 @@ export class CategoryService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public find1(id: number, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseCategoryDTO>;
-    public find1(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseCategoryDTO>>;
-    public find1(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseCategoryDTO>>;
-    public find1(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public findCategory(id: number, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseCategoryDTO>;
+    public findCategory(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseCategoryDTO>>;
+    public findCategory(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseCategoryDTO>>;
+    public findCategory(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling find1.');
+            throw new Error('Required parameter id was null or undefined when calling findCategory.');
         }
 
         let headers = this.defaultHeaders;
@@ -193,10 +193,10 @@ export class CategoryService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAll1(observe?: 'body', reportProgress?: boolean): Observable<ApiResponseListCategoryDTO>;
-    public getAll1(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseListCategoryDTO>>;
-    public getAll1(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseListCategoryDTO>>;
-    public getAll1(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getAllCategories(observe?: 'body', reportProgress?: boolean): Observable<ApiResponseListCategoryDTO>;
+    public getAllCategories(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseListCategoryDTO>>;
+    public getAllCategories(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseListCategoryDTO>>;
+    public getAllCategories(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -231,17 +231,17 @@ export class CategoryService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public update1(body: CategoryDTO, id: string, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseCategoryDTO>;
-    public update1(body: CategoryDTO, id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseCategoryDTO>>;
-    public update1(body: CategoryDTO, id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseCategoryDTO>>;
-    public update1(body: CategoryDTO, id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateCategory(body: CategoryDTO, id: string, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseCategoryDTO>;
+    public updateCategory(body: CategoryDTO, id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseCategoryDTO>>;
+    public updateCategory(body: CategoryDTO, id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseCategoryDTO>>;
+    public updateCategory(body: CategoryDTO, id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling update1.');
+            throw new Error('Required parameter body was null or undefined when calling updateCategory.');
         }
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling update1.');
+            throw new Error('Required parameter id was null or undefined when calling updateCategory.');
         }
 
         let headers = this.defaultHeaders;

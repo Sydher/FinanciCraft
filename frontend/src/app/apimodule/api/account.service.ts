@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { AccountDTO } from '../model/accountDTO';
 import { ApiResponseAccountDTO } from '../model/apiResponseAccountDTO';
 import { ApiResponseBoolean } from '../model/apiResponseBoolean';
+import { ApiResponseDouble } from '../model/apiResponseDouble';
 import { ApiResponseListAccountDTO } from '../model/apiResponseListAccountDTO';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -65,13 +66,13 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public create2(body: AccountDTO, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseAccountDTO>;
-    public create2(body: AccountDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseAccountDTO>>;
-    public create2(body: AccountDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseAccountDTO>>;
-    public create2(body: AccountDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createAccount(body: AccountDTO, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseAccountDTO>;
+    public createAccount(body: AccountDTO, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseAccountDTO>>;
+    public createAccount(body: AccountDTO, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseAccountDTO>>;
+    public createAccount(body: AccountDTO, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling create2.');
+            throw new Error('Required parameter body was null or undefined when calling createAccount.');
         }
 
         let headers = this.defaultHeaders;
@@ -112,13 +113,13 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public delete2(id: number, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseBoolean>;
-    public delete2(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseBoolean>>;
-    public delete2(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseBoolean>>;
-    public delete2(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteAccount(id: number, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseBoolean>;
+    public deleteAccount(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseBoolean>>;
+    public deleteAccount(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseBoolean>>;
+    public deleteAccount(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling delete2.');
+            throw new Error('Required parameter id was null or undefined when calling deleteAccount.');
         }
 
         let headers = this.defaultHeaders;
@@ -153,13 +154,13 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public find2(id: number, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseAccountDTO>;
-    public find2(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseAccountDTO>>;
-    public find2(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseAccountDTO>>;
-    public find2(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public findAccount(id: number, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseAccountDTO>;
+    public findAccount(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseAccountDTO>>;
+    public findAccount(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseAccountDTO>>;
+    public findAccount(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling find2.');
+            throw new Error('Required parameter id was null or undefined when calling findAccount.');
         }
 
         let headers = this.defaultHeaders;
@@ -194,13 +195,13 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findAll(categoryId: number, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseListAccountDTO>;
-    public findAll(categoryId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseListAccountDTO>>;
-    public findAll(categoryId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseListAccountDTO>>;
-    public findAll(categoryId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public findAccountsByCategory(categoryId: number, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseListAccountDTO>;
+    public findAccountsByCategory(categoryId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseListAccountDTO>>;
+    public findAccountsByCategory(categoryId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseListAccountDTO>>;
+    public findAccountsByCategory(categoryId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (categoryId === null || categoryId === undefined) {
-            throw new Error('Required parameter categoryId was null or undefined when calling findAll.');
+            throw new Error('Required parameter categoryId was null or undefined when calling findAccountsByCategory.');
         }
 
         let headers = this.defaultHeaders;
@@ -229,15 +230,56 @@ export class AccountService {
     }
 
     /**
+     * Get account balance by id
+     * 
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getAccountBalance(id: number, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseDouble>;
+    public getAccountBalance(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseDouble>>;
+    public getAccountBalance(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseDouble>>;
+    public getAccountBalance(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling getAccountBalance.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ApiResponseDouble>('get',`${this.basePath}/api/accounts/balance/${encodeURIComponent(String(id))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get all accounts
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAll2(observe?: 'body', reportProgress?: boolean): Observable<ApiResponseListAccountDTO>;
-    public getAll2(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseListAccountDTO>>;
-    public getAll2(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseListAccountDTO>>;
-    public getAll2(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getAllAccounts(observe?: 'body', reportProgress?: boolean): Observable<ApiResponseListAccountDTO>;
+    public getAllAccounts(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseListAccountDTO>>;
+    public getAllAccounts(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseListAccountDTO>>;
+    public getAllAccounts(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -272,17 +314,17 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public update2(body: AccountDTO, id: string, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseAccountDTO>;
-    public update2(body: AccountDTO, id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseAccountDTO>>;
-    public update2(body: AccountDTO, id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseAccountDTO>>;
-    public update2(body: AccountDTO, id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateAccount(body: AccountDTO, id: string, observe?: 'body', reportProgress?: boolean): Observable<ApiResponseAccountDTO>;
+    public updateAccount(body: AccountDTO, id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponseAccountDTO>>;
+    public updateAccount(body: AccountDTO, id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponseAccountDTO>>;
+    public updateAccount(body: AccountDTO, id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling update2.');
+            throw new Error('Required parameter body was null or undefined when calling updateAccount.');
         }
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling update2.');
+            throw new Error('Required parameter id was null or undefined when calling updateAccount.');
         }
 
         let headers = this.defaultHeaders;

@@ -11,6 +11,9 @@ import fr.dev.sydher.financicraft.repository.TransactionRepository
 import fr.dev.sydher.financicraft.utils.AppConst
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
@@ -34,12 +37,12 @@ class TransactionDSImpl @Autowired constructor(
         throw TransactionNotFoundException(AppConst.ERR_ITEM_NOT_FOUND)
     }
 
-    override fun findAllByAccount(accountId: Long): List<TransactionDTO>? {
-        var transac: List<TransactionDTO>? = null
+    override fun findAllByAccount(accountId: Long, pageable: Pageable): PageImpl<TransactionDTO>? {
+        var transac: PageImpl<TransactionDTO>? = null
         accountRepository.findById(accountId).ifPresentOrElse(
             {
-                val transactions = transactionRepository.findAllByAccount(it)
-                transac = transactions.map { transaction -> transaction.toDTO() }
+                val transactions = transactionRepository.findAllByAccount(it, pageable)
+                transac = PageImpl(transactions.content.map { transaction -> transaction.toDTO() }, pageable, transactions.totalElements)
             },
             {
                 log.warn(
@@ -50,11 +53,6 @@ class TransactionDSImpl @Autowired constructor(
             }
         )
         return transac
-    }
-
-    override fun getAll(): List<TransactionDTO> {
-        val transactions = transactionRepository.findAll()
-        return transactions.map { it.toDTO() }
     }
 
     override fun save(transaction: TransactionDTO): TransactionDTO {

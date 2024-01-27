@@ -10,7 +10,6 @@ data class Account(
     var id: Long? = null,
 
     var name: String,
-    var balance: Double,
 
     @ManyToOne
     var category: Category? = null

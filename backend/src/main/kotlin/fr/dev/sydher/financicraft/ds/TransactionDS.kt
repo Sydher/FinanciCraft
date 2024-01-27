@@ -2,6 +2,8 @@ package fr.dev.sydher.financicraft.ds
 
 import fr.dev.sydher.financicraft.bean.dto.TransactionDTO
 import fr.dev.sydher.financicraft.bean.exception.TransactionNotFoundException
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 
 interface TransactionDS {
 
@@ -17,15 +19,10 @@ interface TransactionDS {
     /**
      * Get all transactions by accounts.
      * @param accountId id of the account to search from
+     * @param pageable page informations
      * @return all transactions on this account
      */
-    fun findAllByAccount(accountId: Long): List<TransactionDTO>?
-
-    /**
-     * Get all transactions.
-     * @return all transactions
-     */
-    fun getAll(): List<TransactionDTO>
+    fun findAllByAccount(accountId: Long, pageable: Pageable): PageImpl<TransactionDTO>?
 
     /**
      * Creates or updates a transaction.

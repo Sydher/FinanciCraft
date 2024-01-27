@@ -9,12 +9,8 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { PageImplTransactionDTO } from './pageImplTransactionDTO';
 
-export interface TransactionDTO { 
-    id?: number;
-    name: string;
-    amount: number;
-    date: Date;
-    accountId?: number;
-    categoriesId?: Array<number>;
+export interface ApiResponsePageImplTransactionDTO { 
+    content?: PageImplTransactionDTO;
 }

@@ -15,6 +15,15 @@ interface AccountDS {
     fun find(id: Long): AccountDTO
 
     /**
+     * Get balance account.
+     * @param id the identifier of the account to get balance
+     * @return the account balance
+     * @throws AccountNotFoundException if the account with the specified id doesn't exist
+     */
+    @Throws(AccountNotFoundException::class)
+    fun getBalance(id: Long): Double
+
+    /**
      * Get all accounts by category.
      * @param categoryId id of the category to search from
      * @return all accounts on this category

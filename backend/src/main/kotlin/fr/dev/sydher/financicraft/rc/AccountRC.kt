@@ -17,13 +17,13 @@ class AccountRC @Autowired constructor(private val accountDS: AccountDS) : Abstr
 
     @Operation(summary = "Get all accounts", tags = [AppConst.SWAGGER_TAG_ACCOUNT])
     @GetMapping("/")
-    fun getAll(): ResponseEntity<ApiResponse<List<AccountDTO>>> {
+    fun getAllAccounts(): ResponseEntity<ApiResponse<List<AccountDTO>>> {
         return ResponseEntity(getResponse(accountDS.getAll()), HttpStatus.OK)
     }
 
     @Operation(summary = "Get account by id", tags = [AppConst.SWAGGER_TAG_ACCOUNT])
     @GetMapping("/{id}")
-    fun find(@PathVariable id: Long): ResponseEntity<ApiResponse<AccountDTO>> {
+    fun findAccount(@PathVariable id: Long): ResponseEntity<ApiResponse<AccountDTO>> {
         return try {
             ResponseEntity(getResponse(accountDS.find(id)), HttpStatus.OK)
         } catch (e: AccountNotFoundException) {
@@ -31,27 +31,37 @@ class AccountRC @Autowired constructor(private val accountDS: AccountDS) : Abstr
         }
     }
 
+    @Operation(summary = "Get account balance by id", tags = [AppConst.SWAGGER_TAG_ACCOUNT])
+    @GetMapping("/balance/{id}")
+    fun getAccountBalance(@PathVariable id: Long): ResponseEntity<ApiResponse<Double>> {
+        return try {
+            ResponseEntity(getResponse(accountDS.getBalance(id)), HttpStatus.OK)
+        } catch (e: AccountNotFoundException) {
+            ResponseEntity(HttpStatus.NOT_FOUND)
+        }
+    }
+
     @Operation(summary = "Get all accounts in a category", tags = [AppConst.SWAGGER_TAG_ACCOUNT])
     @GetMapping("/category/{categoryId}")
-    fun findAll(@PathVariable categoryId: Long): ResponseEntity<ApiResponse<List<AccountDTO>?>> {
+    fun findAccountsByCategory(@PathVariable categoryId: Long): ResponseEntity<ApiResponse<List<AccountDTO>?>> {
         return ResponseEntity(getResponse(accountDS.findAll(categoryId)), HttpStatus.OK)
     }
 
     @Operation(summary = "Create account", tags = [AppConst.SWAGGER_TAG_ACCOUNT])
     @PostMapping("/")
-    fun create(@RequestBody account: AccountDTO): ResponseEntity<ApiResponse<AccountDTO>> {
+    fun createAccount(@RequestBody account: AccountDTO): ResponseEntity<ApiResponse<AccountDTO>> {
         return ResponseEntity(getResponse(accountDS.save(account)), HttpStatus.CREATED)
     }
 
     @Operation(summary = "Update account", tags = [AppConst.SWAGGER_TAG_ACCOUNT])
     @PutMapping("/{id}")
-    fun update(@PathVariable id: String, @RequestBody account: AccountDTO): ResponseEntity<ApiResponse<AccountDTO>> {
+    fun updateAccount(@PathVariable id: String, @RequestBody account: AccountDTO): ResponseEntity<ApiResponse<AccountDTO>> {
         return ResponseEntity(getResponse(accountDS.save(account)), HttpStatus.OK)
     }
 
     @Operation(summary = "Delete account", tags = [AppConst.SWAGGER_TAG_ACCOUNT])
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable id: Long): ResponseEntity<ApiResponse<Boolean>> {
+    fun deleteAccount(@PathVariable id: Long): ResponseEntity<ApiResponse<Boolean>> {
         try {
             accountDS.delete(id)
             return ResponseEntity(getResponse(true), HttpStatus.OK)

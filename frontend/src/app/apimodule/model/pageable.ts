@@ -10,11 +10,8 @@
  * Do not edit the class manually.
  */
 
-export interface TransactionDTO { 
-    id?: number;
-    name: string;
-    amount: number;
-    date: Date;
-    accountId?: number;
-    categoriesId?: Array<number>;
+export interface Pageable { 
+    page?: number;
+    size?: number;
+    sort?: Array<string>;
 }

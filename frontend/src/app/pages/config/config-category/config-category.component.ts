@@ -8,6 +8,7 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { CardModule } from 'primeng/card';
 import { environment } from '../../../../environments/environment';
 import { ApiModule, BASE_PATH, CategoryDTO, CategoryService } from '../../../apimodule';
 import { HttpClientModule } from '@angular/common/http';
@@ -30,7 +31,8 @@ import { AbstractCrudComponent } from '../../../shared/abstract/abstract-crud/ab
     InputGroupAddonModule,
     InputTextModule,
     TableModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    CardModule
   ],
   providers: [
     { provide: BASE_PATH, useValue: environment.API_BASE_PATH },
@@ -64,7 +66,7 @@ export class ConfigCategoryComponent extends AbstractCrudComponent<CategoryDTO> 
   }
 
   protected override refreshItemsList(): void {
-    this.categoryService.getAll1().subscribe(response => {
+    this.categoryService.getAllCategories().subscribe(response => {
       if (response.content) { this.items = response.content; }
     });
   }
@@ -75,7 +77,7 @@ export class ConfigCategoryComponent extends AbstractCrudComponent<CategoryDTO> 
       icon: this.formCrud.get("icon")?.value,
       color: this.formCrud.get("color")?.value,
     };
-    this.categoryService.create1(category).subscribe(_ => {
+    this.categoryService.createCategory(category).subscribe(_ => {
       this.messageService.add({ severity: 'success', summary: 'OK', detail: 'Catégorie créée', life: 3000 });
       this.closeModal();
     });
@@ -88,7 +90,7 @@ export class ConfigCategoryComponent extends AbstractCrudComponent<CategoryDTO> 
       icon: this.formCrud.get("icon")?.value,
       color: this.formCrud.get("color")?.value,
     };
-    this.categoryService.update1(category, `${category.id}`).subscribe(_ => {
+    this.categoryService.updateCategory(category, `${category.id}`).subscribe(_ => {
       this.messageService.add({ severity: 'success', summary: 'OK', detail: 'Catégorie modifiée', life: 3000 });
       this.closeModal();
     });
@@ -100,7 +102,7 @@ export class ConfigCategoryComponent extends AbstractCrudComponent<CategoryDTO> 
       header: 'Attention ! Suppression d\'une catégorie',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        if (item.id) this.categoryService.delete1(item.id).subscribe(response => console.debug(response));
+        if (item.id) this.categoryService.deleteCategory(item.id).subscribe(response => console.debug(response));
         this.items = this.items.filter((val) => val.id !== item.id);
         this.messageService.add({ severity: 'info', summary: 'OK', detail: 'Catégorie supprimée', life: 3000 });
       }
@@ -114,7 +116,7 @@ export class ConfigCategoryComponent extends AbstractCrudComponent<CategoryDTO> 
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.selectedItems?.forEach(item => {
-          if (item.id) this.categoryService.delete1(item.id).subscribe(response => console.debug(response));
+          if (item.id) this.categoryService.deleteCategory(item.id).subscribe(response => console.debug(response));
         });
         this.items = this.items.filter((val) => !this.selectedItems?.includes(val));
         this.selectedItems = null;

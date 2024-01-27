@@ -17,13 +17,13 @@ class CategoryRC @Autowired constructor(private val categoryDS: CategoryDS) : Ab
 
     @Operation(summary = "Get all categories", tags = [AppConst.SWAGGER_TAG_CATEGORY])
     @GetMapping("/")
-    fun getAll(): ResponseEntity<ApiResponse<List<CategoryDTO>>> {
+    fun getAllCategories(): ResponseEntity<ApiResponse<List<CategoryDTO>>> {
         return ResponseEntity(getResponse(categoryDS.getAll()), HttpStatus.OK)
     }
 
     @Operation(summary = "Get category by id", tags = [AppConst.SWAGGER_TAG_CATEGORY])
     @GetMapping("/{id}")
-    fun find(@PathVariable id: Long): ResponseEntity<ApiResponse<CategoryDTO>> {
+    fun findCategory(@PathVariable id: Long): ResponseEntity<ApiResponse<CategoryDTO>> {
         return try {
             ResponseEntity(getResponse(categoryDS.find(id)), HttpStatus.OK)
         } catch (e: CategoryNotFoundException) {
@@ -33,19 +33,19 @@ class CategoryRC @Autowired constructor(private val categoryDS: CategoryDS) : Ab
 
     @Operation(summary = "Create category", tags = [AppConst.SWAGGER_TAG_CATEGORY])
     @PostMapping("/")
-    fun create(@RequestBody category: CategoryDTO): ResponseEntity<ApiResponse<CategoryDTO>> {
+    fun createCategory(@RequestBody category: CategoryDTO): ResponseEntity<ApiResponse<CategoryDTO>> {
         return ResponseEntity(getResponse(categoryDS.save(category)), HttpStatus.CREATED)
     }
 
     @Operation(summary = "Update category", tags = [AppConst.SWAGGER_TAG_CATEGORY])
     @PutMapping("/{id}")
-    fun update(@PathVariable id: String, @RequestBody category: CategoryDTO): ResponseEntity<ApiResponse<CategoryDTO>> {
+    fun updateCategory(@PathVariable id: String, @RequestBody category: CategoryDTO): ResponseEntity<ApiResponse<CategoryDTO>> {
         return ResponseEntity(getResponse(categoryDS.save(category)), HttpStatus.OK)
     }
 
     @Operation(summary = "Delete category", tags = [AppConst.SWAGGER_TAG_CATEGORY])
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable id: Long): ResponseEntity<ApiResponse<Boolean>> {
+    fun deleteCategory(@PathVariable id: Long): ResponseEntity<ApiResponse<Boolean>> {
         try {
             categoryDS.delete(id)
             return ResponseEntity(getResponse(true), HttpStatus.OK)
