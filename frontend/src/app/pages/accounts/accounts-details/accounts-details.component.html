@@ -12,7 +12,7 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table [value]="items" [rows]="10" [paginator]="true" [(selection)]="selectedItems" [rowHover]="true"
+    <p-table [value]="items" [rows]="size" [paginator]="true" [(selection)]="selectedItems" [rowHover]="true"
         dataKey="id">
         <ng-template pTemplate="header">
             <tr>
@@ -53,7 +53,7 @@
         </ng-template>
         <ng-template pTemplate="summary">
             <div class="flex align-items-center">
-                Total : {{ items ? items.length : 0 }} catégories
+                Total : {{ items ? items.length : 0 }} transactions (todo utiliser info du back + paging depuis le back)
             </div>
         </ng-template>
     </p-table>

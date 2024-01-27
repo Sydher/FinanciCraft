@@ -22,7 +22,7 @@ export interface PageImplTransactionDTO {
     size?: number;
     number?: number;
     sort?: SortObject;
-    first?: boolean;
     numberOfElements?: number;
+    first?: boolean;
     empty?: boolean;
 }

@@ -20,7 +20,6 @@ import { Observable }                                        from 'rxjs';
 import { ApiResponseBoolean } from '../model/apiResponseBoolean';
 import { ApiResponsePageImplTransactionDTO } from '../model/apiResponsePageImplTransactionDTO';
 import { ApiResponseTransactionDTO } from '../model/apiResponseTransactionDTO';
-import { Pageable } from '../model/pageable';
 import { TransactionDTO } from '../model/transactionDTO';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -151,26 +150,35 @@ export class TransactionService {
      * Get all transactions in an account
      * 
      * @param accountId 
-     * @param pageable 
+     * @param page Zero-based page index (0..N)
+     * @param size The size of the page to be returned
+     * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findAllTransactionByAccount(accountId: number, pageable: Pageable, observe?: 'body', reportProgress?: boolean): Observable<ApiResponsePageImplTransactionDTO>;
-    public findAllTransactionByAccount(accountId: number, pageable: Pageable, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponsePageImplTransactionDTO>>;
-    public findAllTransactionByAccount(accountId: number, pageable: Pageable, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponsePageImplTransactionDTO>>;
-    public findAllTransactionByAccount(accountId: number, pageable: Pageable, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public findAllTransactionByAccount(accountId: number, page?: number, size?: number, sort?: Array<string>, observe?: 'body', reportProgress?: boolean): Observable<ApiResponsePageImplTransactionDTO>;
+    public findAllTransactionByAccount(accountId: number, page?: number, size?: number, sort?: Array<string>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponsePageImplTransactionDTO>>;
+    public findAllTransactionByAccount(accountId: number, page?: number, size?: number, sort?: Array<string>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponsePageImplTransactionDTO>>;
+    public findAllTransactionByAccount(accountId: number, page?: number, size?: number, sort?: Array<string>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (accountId === null || accountId === undefined) {
             throw new Error('Required parameter accountId was null or undefined when calling findAllTransactionByAccount.');
         }
 
-        if (pageable === null || pageable === undefined) {
-            throw new Error('Required parameter pageable was null or undefined when calling findAllTransactionByAccount.');
-        }
+
+
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (pageable !== undefined && pageable !== null) {
-            queryParameters = queryParameters.set('pageable', <any>pageable);
+        if (page !== undefined && page !== null) {
+            queryParameters = queryParameters.set('page', <any>page);
+        }
+        if (size !== undefined && size !== null) {
+            queryParameters = queryParameters.set('size', <any>size);
+        }
+        if (sort) {
+            sort.forEach((element) => {
+                queryParameters = queryParameters.append('sort', <any>element);
+            })
         }
 
         let headers = this.defaultHeaders;

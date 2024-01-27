@@ -58,6 +58,9 @@ export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionD
   accountBalance: number;
   allCategories: CategoryDTO[];
   filteredCategories: any[];
+  page: number;
+  size: number;
+  sort: Array<string>;
 
   constructor(protected override formBuilder: FormBuilder,
     protected override confirmationService: ConfirmationService,
@@ -71,6 +74,9 @@ export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionD
     this.accountBalance = 0;
     this.allCategories = [];
     this.filteredCategories = [];
+    this.page = 0;
+    this.size = 20;
+    this.sort = ["date,desc", "id,desc"];
   }
 
   ngOnInit(): void {
@@ -99,8 +105,7 @@ export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionD
   }
 
   protected override refreshItemsList(): void {
-    const pageable: Pageable = {};
-    this.transactionService.findAllTransactionByAccount(this.accountId, pageable).subscribe(response => {
+    this.transactionService.findAllTransactionByAccount(this.accountId, this.page, this.size, this.sort).subscribe(response => {
       if (response.content && response.content.content) { this.items = response.content.content; }
     });
   }
