@@ -1,4 +1,4 @@
-<mxfile host="Electron" modified="2024-01-27T14:09:03.044Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.21 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="AQ0x1oW7Ev185RPIdYaF" version="22.1.21" type="device" pages="3">
+<mxfile host="Electron" modified="2024-01-27T16:59:18.285Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.21 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="9lqgIJ3s3bYFyB1o614H" version="22.1.21" type="device" pages="3">
   <diagram id="P5Ceji4rKThtuOgRhDsN" name="Présentation">
     <mxGraphModel dx="2234" dy="1244" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -102,7 +102,7 @@
         <mxCell id="NH5Gq3jinRYm4cNYVrfn-15" value="amount" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="NH5Gq3jinRYm4cNYVrfn-13" vertex="1">
           <mxGeometry y="90" width="140" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="NH5Gq3jinRYm4cNYVrfn-16" value="category" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="NH5Gq3jinRYm4cNYVrfn-13" vertex="1">
+        <mxCell id="NH5Gq3jinRYm4cNYVrfn-16" value="categories" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="NH5Gq3jinRYm4cNYVrfn-13" vertex="1">
           <mxGeometry y="120" width="140" height="30" as="geometry" />
         </mxCell>
         <mxCell id="NH5Gq3jinRYm4cNYVrfn-29" value="date" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="NH5Gq3jinRYm4cNYVrfn-13" vertex="1">

@@ -13,11 +13,12 @@ import { environment } from './../../../../environments/environment';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { Pageable } from '../../../apimodule/model/pageable';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AbstractCrudComponent } from '../../../shared/abstract/abstract-crud/abstract-crud.component';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
 import { CommonModule } from '@angular/common';
+import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 
 @Component({
   selector: 'app-accounts-details',
@@ -38,6 +39,7 @@ import { CommonModule } from '@angular/common';
     ConfirmDialogModule,
     CardModule,
     CalendarModule,
+    AutoCompleteModule,
   ],
   providers: [
     { provide: BASE_PATH, useValue: environment.API_BASE_PATH },
@@ -50,20 +52,31 @@ import { CommonModule } from '@angular/common';
 export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionDTO> implements OnInit {
 
   accountId: number;
+  accountName: string;
+  accountBalance: number;
+  allCategories: CategoryDTO[];
+  filteredCategories: any[];
 
   constructor(protected override formBuilder: FormBuilder,
     protected override confirmationService: ConfirmationService,
     protected override messageService: MessageService,
-    private accountService: AccountService,
     private categoryService: CategoryService,
     private transactionService: TransactionService) {
 
     super(formBuilder, confirmationService, messageService);
     this.accountId = 1;//TODO 0
+    this.accountName = "Mon compte";// TODO vide
+    this.accountBalance = 0;
+    this.allCategories = [];
+    this.filteredCategories = [];
   }
 
   ngOnInit(): void {
     this.refreshItemsList();
+
+    this.categoryService.getAllCategories().subscribe(response => {
+      if (response.content) this.allCategories = response.content;
+    });
   }
 
   protected override initForm(item?: TransactionDTO): FormGroup {
@@ -73,6 +86,7 @@ export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionD
       name: new FormControl(item?.name, [Validators.required]),
       amount: new FormControl(item?.amount, [Validators.required]),
       date: new FormControl(theDate, [Validators.required]),
+      categories: this.formBuilder.array([]),
     });
   }
 
@@ -88,6 +102,7 @@ export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionD
       name: this.formCrud.get("name")?.value,
       amount: this.formCrud.get("amount")?.value,
       date: this.formCrud.get("date")?.value,
+      categoriesId: this.formCrud.get("categories")?.value.map((c: { id: any; }) => c.id),
       accountId: this.accountId,
     };
     this.transactionService.createTransaction(transaction).subscribe(_ => {
@@ -102,6 +117,7 @@ export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionD
       name: this.formCrud.get("name")?.value,
       amount: this.formCrud.get("amount")?.value,
       date: this.formCrud.get("date")?.value,
+      categoriesId: this.formCrud.get("categories")?.value.map((c: { id: any; }) => c.id),
       accountId: this.accountId,
     };
     this.transactionService.updateTransaction(transaction, `${transaction.id}`).subscribe(_ => {
@@ -137,6 +153,37 @@ export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionD
         this.messageService.add({ severity: 'info', summary: 'OK', detail: 'Sélection supprimée', life: 3000 });
       }
     });
+  }
+
+  get categories() {
+    return this.formCrud.get('categories') as FormArray;
+  }
+
+  addCategoryToForm() {
+    this.categories.push(this.formBuilder.control(''));
+  }
+
+  removeCategoryFromForm(i: number) {
+    this.categories.removeAt(i);
+  }
+
+  filterCategory(event: AutoCompleteCompleteEvent) {
+    let filtered: any[] = [];
+    let query = event.query;
+
+    for (let i = 0; i < (this.allCategories as any[]).length; i++) {
+      let country = (this.allCategories as any[])[i];
+      if (country.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(country);
+      }
+    }
+
+    this.filteredCategories = filtered;
+  }
+
+  getCategoryName(categoryId: number): string {
+    const cat = this.allCategories.find(category => category.id === categoryId);
+    return cat ? cat.name : "";
   }
 
 }

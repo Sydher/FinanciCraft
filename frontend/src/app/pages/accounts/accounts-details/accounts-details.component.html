@@ -1,5 +1,7 @@
 <p-toast></p-toast>
 
+<h3>{{ accountName }} - {{ accountBalance }} €</h3>
+
 <div class="card mb-3">
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
@@ -17,10 +19,11 @@
                 <th style="width: 4rem">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th pSortableColumn="id">Id <p-sortIcon field="id"></p-sortIcon></th>
-                <th pSortableColumn="name">Nom <p-sortIcon field="name"></p-sortIcon></th>
-                <th pSortableColumn="amount">Montant <p-sortIcon field="amount"></p-sortIcon></th>
-                <th pSortableColumn="date">Date <p-sortIcon field="date"></p-sortIcon></th>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Montant</th>
+                <th>Date</th>
+                <th>Catégories</th>
                 <th>Actions</th>
             </tr>
         </ng-template>
@@ -34,9 +37,14 @@
                 <td>{{ transaction.amount }} €</td>
                 <td>{{ transaction.date | date: 'dd/MM/yyyy' }}</td>
                 <td>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                    @for (categoryId of transaction.categoriesId; track $index) {
+                    {{ getCategoryName(categoryId) }}
+                    }
+                </td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"
                         (click)="openModal(transaction)"></button>
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
                         (click)="deleteItem(transaction)"></button>
                 </td>
             </tr>
@@ -69,9 +77,27 @@
                 <p-inputGroupAddon>
                     <i class="pi pi-pencil"></i>
                 </p-inputGroupAddon>
-                <!-- <input pInputText placeholder="Date" formControlName="date"> -->
                 <p-calendar formControlName="date" appendTo="body" dateFormat="yy-mm-dd"></p-calendar>
             </p-inputGroup>
+
+            <hr>
+
+            <ng-container formArrayName="categories">
+                @for (category of categories.controls; track $index) {
+                <p-inputGroup>
+                    <p-inputGroupAddon>
+                        <i class="pi pi-pencil"></i>
+                    </p-inputGroupAddon>
+                    <p-autoComplete [formControlName]="$index" [suggestions]="filteredCategories"
+                        (completeMethod)="filterCategory($event)" field="name" [style]="{'width':'100%'}"
+                        [inputStyle]="{'width':'100%'}" appendTo="body" [dropdown]="true"></p-autoComplete>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-danger"
+                        (click)="removeCategoryFromForm($index)"></button>
+                </p-inputGroup>
+                }
+            </ng-container>
+            <button pButton pRipple label="Ajouter une catégorie" icon="pi pi-plus" class="p-button-primary"
+                (click)="addCategoryToForm()"></button>
         </form>
     </ng-template>
 
