@@ -10,8 +10,10 @@ import { environment } from './../../../environments/environment';
 })
 export class HomeComponent implements OnInit {
 
+  production = false;
+
   ngOnInit(): void {
-    console.info(environment.production);
+    this.production = environment.production;
   }
 
 }
