@@ -23,19 +23,24 @@
                 <th>Actions</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-category>
+        <ng-template pTemplate="body" let-account>
             <tr>
                 <td>
-                    <p-tableCheckbox [value]="category"></p-tableCheckbox>
+                    <p-tableCheckbox [value]="account"></p-tableCheckbox>
                 </td>
-                <td>{{ category.id }}</td>
-                <td>{{ category.name }}</td>
-                <td>{{ category.categoryId }}</td>
+                <td>{{ account.id }}</td>
+                <td>{{ account.name }}</td>
+                <td>
+                    <app-shared-badge [icon]="getCategoryById(account.categoryId).icon"
+                        [text]="getCategoryById(account.categoryId).name"
+                        [color]="getCategoryById(account.categoryId).color">
+                    </app-shared-badge>
+                </td>
                 <td>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"
-                        (click)="openModal(category)"></button>
+                        (click)="openModal(account)"></button>
                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
-                        (click)="deleteItem(category)"></button>
+                        (click)="deleteItem(account)"></button>
                 </td>
             </tr>
         </ng-template>
@@ -61,7 +66,9 @@
                 <p-inputGroupAddon>
                     <i class="pi pi-table"></i>
                 </p-inputGroupAddon>
-                <input pInputText placeholder="categoryId" formControlName="categoryId">
+                <p-autoComplete formControlName="categoryId" [suggestions]="filteredCategories"
+                    (completeMethod)="filterCategory($event)" field="name" [style]="{'width':'100%'}"
+                    [inputStyle]="{'width':'100%'}" appendTo="body" [dropdown]="true"></p-autoComplete>
             </p-inputGroup>
         </form>
     </ng-template>

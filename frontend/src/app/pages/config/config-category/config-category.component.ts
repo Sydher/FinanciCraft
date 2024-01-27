@@ -15,6 +15,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { AbstractCrudComponent } from '../../../shared/abstract/abstract-crud/abstract-crud.component';
+import { ColorPickerModule } from 'primeng/colorpicker';
+import { BadgeComponent } from '../../../shared/components/badge/badge.component';
 
 @Component({
   selector: 'app-config-category',
@@ -32,7 +34,9 @@ import { AbstractCrudComponent } from '../../../shared/abstract/abstract-crud/ab
     InputTextModule,
     TableModule,
     ConfirmDialogModule,
-    CardModule
+    CardModule,
+    ColorPickerModule,
+    BadgeComponent,
   ],
   providers: [
     { provide: BASE_PATH, useValue: environment.API_BASE_PATH },

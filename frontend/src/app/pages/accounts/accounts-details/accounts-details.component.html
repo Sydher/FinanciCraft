@@ -38,7 +38,9 @@
                 <td>{{ transaction.date | date: 'dd/MM/yyyy' }}</td>
                 <td>
                     @for (categoryId of transaction.categoriesId; track $index) {
-                    {{ getCategoryName(categoryId) }}
+                    <app-shared-badge [icon]="getCategoryById(categoryId).icon"
+                        [text]="getCategoryById(categoryId).name" [color]="getCategoryById(categoryId).color">
+                    </app-shared-badge>
                     }
                 </td>
                 <td>
@@ -86,7 +88,7 @@
                 @for (category of categories.controls; track $index) {
                 <p-inputGroup>
                     <p-inputGroupAddon>
-                        <i class="pi pi-pencil"></i>
+                        <i class="pi pi-table"></i>
                     </p-inputGroupAddon>
                     <p-autoComplete [formControlName]="$index" [suggestions]="filteredCategories"
                         (completeMethod)="filterCategory($event)" field="name" [style]="{'width':'100%'}"

@@ -6,6 +6,7 @@ import fr.dev.sydher.financicraft.bean.exception.TransactionNotFoundException
 import fr.dev.sydher.financicraft.ds.TransactionDS
 import fr.dev.sydher.financicraft.utils.AppConst
 import io.swagger.v3.oas.annotations.Operation
+import org.springdoc.core.annotations.ParameterObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
@@ -29,7 +30,7 @@ class TransactionRC @Autowired constructor(private val transactionDS: Transactio
 
     @Operation(summary = "Get all transactions in an account", tags = [AppConst.SWAGGER_TAG_TRANSACTION])
     @GetMapping("/account/{accountId}")
-    fun findAllTransactionByAccount(@PathVariable accountId: Long, pageable: Pageable): ResponseEntity<ApiResponse<PageImpl<TransactionDTO>?>> {
+    fun findAllTransactionByAccount(@PathVariable accountId: Long, @ParameterObject pageable: Pageable): ResponseEntity<ApiResponse<PageImpl<TransactionDTO>?>> {
         return ResponseEntity(getResponse(transactionDS.findAllByAccount(accountId, pageable)), HttpStatus.OK)
     }
 

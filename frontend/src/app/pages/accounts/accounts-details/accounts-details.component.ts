@@ -19,6 +19,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
 import { CommonModule } from '@angular/common';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
+import { BadgeComponent } from '../../../shared/components/badge/badge.component';
 
 @Component({
   selector: 'app-accounts-details',
@@ -40,6 +41,7 @@ import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocompl
     CardModule,
     CalendarModule,
     AutoCompleteModule,
+    BadgeComponent,
   ],
   providers: [
     { provide: BASE_PATH, useValue: environment.API_BASE_PATH },
@@ -81,12 +83,18 @@ export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionD
 
   protected override initForm(item?: TransactionDTO): FormGroup {
     const theDate = item?.date ? new Date(item.date) : null;
+
+    let cats: any[] = [];
+    if (item && item.categoriesId) {
+      item.categoriesId.forEach(c => cats.push({ id: c, name: "", icon: "", color: "" }));
+    }
+
     return this.formBuilder.group({
       id: new FormControl(item?.id, []),
       name: new FormControl(item?.name, [Validators.required]),
       amount: new FormControl(item?.amount, [Validators.required]),
       date: new FormControl(theDate, [Validators.required]),
-      categories: this.formBuilder.array([]),
+      categories: this.formBuilder.array(cats),
     });
   }
 
@@ -181,9 +189,9 @@ export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionD
     this.filteredCategories = filtered;
   }
 
-  getCategoryName(categoryId: number): string {
-    const cat = this.allCategories.find(category => category.id === categoryId);
-    return cat ? cat.name : "";
+  getCategoryById(id: number): CategoryDTO {
+    const cat = this.allCategories.find(c => c.id === id);
+    return cat ? cat : { name: "", icon: "", color: "" };
   }
 
 }
