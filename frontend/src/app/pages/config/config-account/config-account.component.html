@@ -1,0 +1,89 @@
+<p-toast></p-toast>
+
+<div class="card mb-3">
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="Ajouter" icon="pi pi-plus" class="p-button-success mr-2"
+                (click)="openModal()"></button>
+            <button pButton pRipple label="Supprimer la sélection" icon="pi pi-trash" class="p-button-danger"
+                (click)="deleteSelectedItems()" [disabled]="!selectedItems || !selectedItems.length"></button>
+        </ng-template>
+    </p-toolbar>
+
+    <p-table [value]="items" [rows]="10" [paginator]="true" [(selection)]="selectedItems" [rowHover]="true"
+        dataKey="id">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 4rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="id">Id <p-sortIcon field="id"></p-sortIcon></th>
+                <th pSortableColumn="name">Nom <p-sortIcon field="name"></p-sortIcon></th>
+                <th pSortableColumn="categoryId">Catégorie <p-sortIcon field="categoryId"></p-sortIcon></th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-account>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="account"></p-tableCheckbox>
+                </td>
+                <td>{{ account.id }}</td>
+                <td>{{ account.name }}</td>
+                <td>
+                    <app-shared-badge [icon]="getCategoryById(account.categoryId).icon"
+                        [text]="getCategoryById(account.categoryId).name"
+                        [color]="getCategoryById(account.categoryId).color">
+                    </app-shared-badge>
+                </td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"
+                        (click)="openModal(account)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                        (click)="deleteItem(account)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center">
+                Total : {{ items ? items.length : 0 }} comptes
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<!-- Modal Ajout/Modif -->
+<p-dialog [(visible)]="showFormModal" header="Ajouter une catégorie" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <form [formGroup]="formCrud">
+            <p-inputGroup>
+                <p-inputGroupAddon>
+                    <i class="pi pi-user-edit"></i>
+                </p-inputGroupAddon>
+                <input pInputText placeholder="name" formControlName="name">
+            </p-inputGroup>
+            <p-inputGroup>
+                <p-inputGroupAddon>
+                    <i class="pi pi-table"></i>
+                </p-inputGroupAddon>
+                <p-autoComplete formControlName="categoryId" [suggestions]="filteredCategories"
+                    (completeMethod)="filterCategory($event)" field="name" [style]="{'width':'100%'}"
+                    [inputStyle]="{'width':'100%'}" appendTo="body" [dropdown]="true"></p-autoComplete>
+            </p-inputGroup>
+        </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text"
+            (click)="closeModal()"></button>
+        @if (formCrud.valid && !formCrud.get("id")?.value) {
+        <button pButton pRipple label="Créer" icon="pi pi-check" class="p-button-text" (click)="addItem()"></button>
+        } @else if (formCrud.valid && formCrud.get("id")?.value) {
+        <button pButton pRipple label="Editer" icon="pi pi-check" class="p-button-text" (click)="editItem()"></button>
+        } @else {
+        <button pButton pRipple label="Sauvegarder" icon="pi pi-check" class="p-button-text" disabled></button>
+        }
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog acceptLabel="Oui" rejectLabel="Non"></p-confirmDialog>

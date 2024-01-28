@@ -1,0 +1,119 @@
+<p-toast></p-toast>
+
+<h3>{{ accountName }} - {{ accountBalance }} €</h3>
+
+<div class="card mb-3">
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="Ajouter" icon="pi pi-plus" class="p-button-success mr-2"
+                (click)="openModal()"></button>
+            <button pButton pRipple label="Supprimer la sélection" icon="pi pi-trash" class="p-button-danger"
+                (click)="deleteSelectedItems()" [disabled]="!selectedItems || !selectedItems.length"></button>
+        </ng-template>
+    </p-toolbar>
+
+    <p-table [value]="items" [lazy]="true" (onLazyLoad)="loadLazy($event)" [rows]="size" [totalRecords]="totalElements"
+        [paginator]="true" [(selection)]="selectedItems" [rowHover]="true" dataKey="id">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 4rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Montant</th>
+                <th>Date</th>
+                <th>Catégories</th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-transaction>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="transaction"></p-tableCheckbox>
+                </td>
+                <td>{{ transaction.id }}</td>
+                <td>{{ transaction.name }}</td>
+                <td>{{ transaction.amount }} €</td>
+                <td>{{ transaction.date | date: 'dd/MM/yyyy' }}</td>
+                <td>
+                    @for (categoryId of transaction.categoriesId; track $index) {
+                    <app-shared-badge [icon]="getCategoryById(categoryId).icon"
+                        [text]="getCategoryById(categoryId).name" [color]="getCategoryById(categoryId).color">
+                    </app-shared-badge>
+                    }
+                </td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"
+                        (click)="openModal(transaction)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                        (click)="deleteItem(transaction)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center">
+                Total : {{ totalElements }} transactions
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<!-- Modal Ajout/Modif -->
+<p-dialog [(visible)]="showFormModal" header="Ajouter une transaction" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <form [formGroup]="formCrud">
+            <p-inputGroup>
+                <p-inputGroupAddon>
+                    <i class="pi pi-user-edit"></i>
+                </p-inputGroupAddon>
+                <input pInputText placeholder="Nom" formControlName="name">
+            </p-inputGroup>
+            <p-inputGroup>
+                <p-inputGroupAddon>
+                    <i class="pi pi-image"></i>
+                </p-inputGroupAddon>
+                <input pInputText placeholder="Montant" formControlName="amount">
+            </p-inputGroup>
+            <p-inputGroup>
+                <p-inputGroupAddon>
+                    <i class="pi pi-pencil"></i>
+                </p-inputGroupAddon>
+                <p-calendar formControlName="date" appendTo="body" dateFormat="yy-mm-dd"></p-calendar>
+            </p-inputGroup>
+
+            <hr>
+
+            <ng-container formArrayName="categories">
+                @for (category of categories.controls; track $index) {
+                <p-inputGroup>
+                    <p-inputGroupAddon>
+                        <i class="pi pi-table"></i>
+                    </p-inputGroupAddon>
+                    <p-autoComplete [formControlName]="$index" [suggestions]="filteredCategories"
+                        (completeMethod)="filterCategory($event)" field="name" [style]="{'width':'100%'}"
+                        [inputStyle]="{'width':'100%'}" appendTo="body" [dropdown]="true"></p-autoComplete>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-danger"
+                        (click)="removeCategoryFromForm($index)"></button>
+                </p-inputGroup>
+                }
+            </ng-container>
+            <button pButton pRipple label="Ajouter une catégorie" icon="pi pi-plus" class="p-button-primary"
+                (click)="addCategoryToForm()"></button>
+        </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text"
+            (click)="closeModal()"></button>
+        @if (formCrud.valid && !formCrud.get("id")?.value) {
+        <button pButton pRipple label="Créer" icon="pi pi-check" class="p-button-text" (click)="addItem()"></button>
+        } @else if (formCrud.valid && formCrud.get("id")?.value) {
+        <button pButton pRipple label="Editer" icon="pi pi-check" class="p-button-text" (click)="editItem()"></button>
+        } @else {
+        <button pButton pRipple label="Sauvegarder" icon="pi pi-check" class="p-button-text" disabled></button>
+        }
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog acceptLabel="Oui" rejectLabel="Non"></p-confirmDialog>

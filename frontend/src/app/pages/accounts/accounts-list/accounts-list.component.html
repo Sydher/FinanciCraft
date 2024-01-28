@@ -1,0 +1,18 @@
+@for (account of accounts; track $index) {
+<div class="card flex justify-content-center mb-3">
+    <p-card>
+        <h2>
+            {{ account.name }}
+        </h2>
+        <p>
+            <app-shared-badge [icon]="getCategoryIcon(account)" [text]="getCategoryName(account)"
+                [color]="getCategoryColor(account)" class="mr-3">
+            </app-shared-badge>
+            Balance du compte :
+            <strong>{{ account.balance }} €</strong>
+            <button pButton pRipple icon="pi pi-list" class="p-button p-button-primary ml-3"
+                (click)="openAccount(account)" label="Ouvrir le compte"></button>
+        </p>
+    </p-card>
+</div>
+}
