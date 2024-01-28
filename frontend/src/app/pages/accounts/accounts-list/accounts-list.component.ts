@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { environment } from './../../../../environments/environment';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
+import { BadgeComponent } from '../../../shared/components/badge/badge.component';
 
 @Component({
   selector: 'app-accounts-list',
@@ -13,6 +14,7 @@ import { ButtonModule } from 'primeng/button';
     ApiModule,
     CardModule,
     ButtonModule,
+    BadgeComponent,
   ],
   providers: [{ provide: BASE_PATH, useValue: environment.API_BASE_PATH }],
   templateUrl: './accounts-list.component.html',
@@ -20,7 +22,7 @@ import { ButtonModule } from 'primeng/button';
 })
 export class AccountsListComponent implements OnInit {
 
-  @Output() ouputOpenAccount = new EventEmitter<number>();
+  @Output() ouputOpenAccount = new EventEmitter<AccountDTO>();
 
   accounts: AccountDTO[];
   categories: Map<number, CategoryDTO>;
@@ -69,9 +71,14 @@ export class AccountsListComponent implements OnInit {
     return name !== undefined ? name : "Inconnu";
   }
 
+  getCategoryColor(account: AccountDTO): string {
+    const categoryId = account.categoryId !== undefined ? account.categoryId : 0;
+    const color = this.categories.get(categoryId)?.color;
+    return color !== undefined ? color : "Inconnu";
+  }
+
   openAccount(account: AccountDTO): void {
-    const accountId = account.id !== undefined ? account.id : 0;
-    this.ouputOpenAccount.emit(accountId);
+    this.ouputOpenAccount.emit(account);
   }
 
 }

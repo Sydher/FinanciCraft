@@ -9,5 +9,6 @@
 <button pButton pRipple icon="pi pi-arrow-left" class="p-button p-button-primary ml-3" (click)="back()"
     label="Revenir à la liste des comptes"></button>
 <hr class="mt-5 mb-5">
-<app-accounts-details></app-accounts-details>
+<app-accounts-details [accountId]="accountIdToShow" [accountName]="accountToShow.name"
+    [accountBalance]="accountToShow.balance"></app-accounts-details>
 }

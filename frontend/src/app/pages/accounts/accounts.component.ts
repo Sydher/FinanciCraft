@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AccountsListComponent } from './accounts-list/accounts-list.component';
 import { ButtonModule } from 'primeng/button';
 import { AccountsDetailsComponent } from './accounts-details/accounts-details.component';
+import { AccountDTO } from '../../apimodule';
 
 @Component({
   selector: 'app-accounts',
@@ -16,18 +17,20 @@ import { AccountsDetailsComponent } from './accounts-details/accounts-details.co
 })
 export class AccountsComponent implements OnInit {
 
+  accountToShow!: AccountDTO;
   accountIdToShow: number;
 
   constructor() {
-    this.accountIdToShow = 1; // TODO 0 par défaut
+    this.accountIdToShow = 0;
   }
 
   ngOnInit(): void {
     //
   }
 
-  receiveOpenAccount(accountId: number) {
-    this.accountIdToShow = accountId;
+  receiveOpenAccount(account: AccountDTO) {
+    this.accountToShow = account;
+    this.accountIdToShow = account.id ? account.id : 0;
   }
 
   back(): void {

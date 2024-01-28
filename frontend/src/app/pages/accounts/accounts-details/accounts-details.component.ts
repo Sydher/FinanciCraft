@@ -1,21 +1,20 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { AccountDTO, AccountService, ApiModule, BASE_PATH, CategoryDTO, CategoryService, TransactionDTO, TransactionService } from '../../../apimodule';
+import { Component, Input, OnInit } from '@angular/core';
+import { AccountService, ApiModule, BASE_PATH, CategoryDTO, CategoryService, TransactionDTO, TransactionService } from '../../../apimodule';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { DialogModule } from 'primeng/dialog';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
-import { TableModule } from 'primeng/table';
+import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { HttpClientModule } from '@angular/common/http';
 import { environment } from './../../../../environments/environment';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
-import { Pageable } from '../../../apimodule/model/pageable';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AbstractCrudComponent } from '../../../shared/abstract/abstract-crud/abstract-crud.component';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
 import { CommonModule } from '@angular/common';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
@@ -53,30 +52,36 @@ import { BadgeComponent } from '../../../shared/components/badge/badge.component
 })
 export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionDTO> implements OnInit {
 
-  accountId: number;
-  accountName: string;
-  accountBalance: number;
+  @Input() accountId: number;
+  @Input() accountName: string;
+  @Input() accountBalance: number;
+
   allCategories: CategoryDTO[];
   filteredCategories: any[];
   page: number;
   size: number;
   sort: Array<string>;
+  totalPages: number;
+  totalElements: number;
 
   constructor(protected override formBuilder: FormBuilder,
     protected override confirmationService: ConfirmationService,
     protected override messageService: MessageService,
     private categoryService: CategoryService,
-    private transactionService: TransactionService) {
+    private transactionService: TransactionService,
+    private accountService: AccountService) {
 
     super(formBuilder, confirmationService, messageService);
-    this.accountId = 1;//TODO 0
-    this.accountName = "Mon compte";// TODO vide
+    this.accountId = 0;
+    this.accountName = "";
     this.accountBalance = 0;
     this.allCategories = [];
     this.filteredCategories = [];
     this.page = 0;
     this.size = 20;
     this.sort = ["date,desc", "id,desc"];
+    this.totalPages = 0;
+    this.totalElements = 0;
   }
 
   ngOnInit(): void {
@@ -104,9 +109,21 @@ export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionD
     });
   }
 
+  loadLazy(event: TableLazyLoadEvent): void {
+    const first = event.first ? event.first : 0;
+    this.page = first === 0 ? 0 : first / this.size;
+    this.refreshItemsList();
+  }
+
   protected override refreshItemsList(): void {
     this.transactionService.findAllTransactionByAccount(this.accountId, this.page, this.size, this.sort).subscribe(response => {
-      if (response.content && response.content.content) { this.items = response.content.content; }
+      const r = response.content;
+      if (r && r.content) {
+        this.items = r.content;
+        this.page = r.number ? r.number : 0;
+        this.totalPages = r.totalPages ? r.totalPages : 0;
+        this.totalElements = r.totalElements ? r.totalElements : 0;
+      }
     });
   }
 
@@ -121,6 +138,7 @@ export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionD
     this.transactionService.createTransaction(transaction).subscribe(_ => {
       this.messageService.add({ severity: 'success', summary: 'OK', detail: 'Transaction ajoutée', life: 3000 });
       this.closeModal();
+      this.recalculAccountBalance();
     });
   }
 
@@ -136,6 +154,7 @@ export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionD
     this.transactionService.updateTransaction(transaction, `${transaction.id}`).subscribe(_ => {
       this.messageService.add({ severity: 'success', summary: 'OK', detail: 'Transaction modifiée', life: 3000 });
       this.closeModal();
+      this.recalculAccountBalance();
     });
   }
 
@@ -148,6 +167,7 @@ export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionD
         if (item.id) this.transactionService.deleteTransaction(item.id).subscribe(response => console.debug(response));
         this.items = this.items.filter((val) => val.id !== item.id);
         this.messageService.add({ severity: 'info', summary: 'OK', detail: 'Transaction supprimé', life: 3000 });
+        this.recalculAccountBalance();
       }
     });
   }
@@ -164,6 +184,7 @@ export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionD
         this.items = this.items.filter((val) => !this.selectedItems?.includes(val));
         this.selectedItems = null;
         this.messageService.add({ severity: 'info', summary: 'OK', detail: 'Sélection supprimée', life: 3000 });
+        this.recalculAccountBalance();
       }
     });
   }
@@ -197,6 +218,10 @@ export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionD
   getCategoryById(id: number): CategoryDTO {
     const cat = this.allCategories.find(c => c.id === id);
     return cat ? cat : { name: "", icon: "", color: "" };
+  }
+
+  recalculAccountBalance(): void {
+    this.accountService.getAccountBalance(this.accountId).subscribe(responseBalance => { if (responseBalance.content) this.accountBalance = responseBalance.content });
   }
 
 }

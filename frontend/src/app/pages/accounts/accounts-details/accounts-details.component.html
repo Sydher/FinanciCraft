@@ -12,8 +12,8 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table [value]="items" [rows]="size" [paginator]="true" [(selection)]="selectedItems" [rowHover]="true"
-        dataKey="id">
+    <p-table [value]="items" [lazy]="true" (onLazyLoad)="loadLazy($event)" [rows]="size" [totalRecords]="totalElements"
+        [paginator]="true" [(selection)]="selectedItems" [rowHover]="true" dataKey="id">
         <ng-template pTemplate="header">
             <tr>
                 <th style="width: 4rem">
@@ -53,7 +53,7 @@
         </ng-template>
         <ng-template pTemplate="summary">
             <div class="flex align-items-center">
-                Total : {{ items ? items.length : 0 }} transactions (todo utiliser info du back + paging depuis le back)
+                Total : {{ totalElements }} transactions
             </div>
         </ng-template>
     </p-table>
