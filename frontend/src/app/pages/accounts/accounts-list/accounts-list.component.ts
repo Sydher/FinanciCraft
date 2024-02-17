@@ -1,7 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { AccountDTO, AccountService, ApiModule, BASE_PATH, CategoryDTO, CategoryService } from '../../../apimodule';
+import { AccountDTO, AccountService, ApiModule, CategoryDTO, CategoryService } from '../../../apimodule';
 import { HttpClientModule } from '@angular/common/http';
-import { environment } from './../../../../environments/environment';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { BadgeComponent } from '../../../shared/components/badge/badge.component';
@@ -16,7 +15,6 @@ import { BadgeComponent } from '../../../shared/components/badge/badge.component
     ButtonModule,
     BadgeComponent,
   ],
-  providers: [{ provide: BASE_PATH, useValue: environment.API_BASE_PATH }],
   templateUrl: './accounts-list.component.html',
   styleUrl: './accounts-list.component.scss'
 })

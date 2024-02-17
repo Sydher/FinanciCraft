@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AccountService, ApiModule, BASE_PATH, CategoryDTO, CategoryService, TransactionDTO, TransactionService } from '../../../apimodule';
+import { AccountService, ApiModule, CategoryDTO, CategoryService, TransactionDTO, TransactionService } from '../../../apimodule';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { DialogModule } from 'primeng/dialog';
@@ -9,12 +9,11 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { HttpClientModule } from '@angular/common/http';
-import { environment } from './../../../../environments/environment';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AbstractCrudComponent } from '../../../shared/abstract/abstract-crud/abstract-crud.component';
-import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
 import { CommonModule } from '@angular/common';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
@@ -43,7 +42,6 @@ import { BadgeComponent } from '../../../shared/components/badge/badge.component
     BadgeComponent,
   ],
   providers: [
-    { provide: BASE_PATH, useValue: environment.API_BASE_PATH },
     MessageService,
     ConfirmationService
   ],

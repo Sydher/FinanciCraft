@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    API_BASE_PATH: 'https://api.angular.schule'
+    API_BASE_PATH: 'http://localhost:8081'
 };

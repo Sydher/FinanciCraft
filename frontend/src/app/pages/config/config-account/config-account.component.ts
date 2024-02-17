@@ -9,8 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { CardModule } from 'primeng/card';
-import { environment } from '../../../../environments/environment';
-import { AccountDTO, AccountService, ApiModule, BASE_PATH, CategoryDTO, CategoryService } from '../../../apimodule';
+import { AccountDTO, AccountService, ApiModule, CategoryDTO, CategoryService } from '../../../apimodule';
 import { HttpClientModule } from '@angular/common/http';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -39,7 +38,6 @@ import { BadgeComponent } from '../../../shared/components/badge/badge.component
     BadgeComponent,
   ],
   providers: [
-    { provide: BASE_PATH, useValue: environment.API_BASE_PATH },
     MessageService,
     ConfirmationService
   ],
