@@ -34,12 +34,17 @@
                 </td>
                 <td>{{ transaction.id }}</td>
                 <td>{{ transaction.name }}</td>
-                <td>{{ transaction.amount }} €</td>
+                @if (transaction.amount > 0) {
+                <td class="amount_plus">{{ transaction.amount }} €</td>
+                } @else {
+                <td class="amount_minus">{{ transaction.amount }} €€€</td>
+                }
                 <td>{{ transaction.date | date: 'dd/MM/yyyy' }}</td>
                 <td>
                     @for (categoryId of transaction.categoriesId; track $index) {
                     <app-shared-badge [icon]="getCategoryById(categoryId).icon"
-                        [text]="getCategoryById(categoryId).name" [color]="getCategoryById(categoryId).color">
+                        [text]="getCategoryById(categoryId).name" [color]="getCategoryById(categoryId).color"
+                        class="mr-1">
                     </app-shared-badge>
                     }
                 </td>
@@ -65,21 +70,21 @@
         <form [formGroup]="formCrud">
             <p-inputGroup>
                 <p-inputGroupAddon>
-                    <i class="pi pi-user-edit"></i>
+                    <i class="pi pi-file-edit"></i>
                 </p-inputGroupAddon>
                 <input pInputText placeholder="Nom" formControlName="name">
             </p-inputGroup>
             <p-inputGroup>
                 <p-inputGroupAddon>
-                    <i class="pi pi-image"></i>
+                    <i class="pi pi-euro"></i>
                 </p-inputGroupAddon>
                 <input pInputText placeholder="Montant" formControlName="amount">
             </p-inputGroup>
             <p-inputGroup>
                 <p-inputGroupAddon>
-                    <i class="pi pi-pencil"></i>
+                    <i class="pi pi-calendar-plus"></i>
                 </p-inputGroupAddon>
-                <p-calendar formControlName="date" appendTo="body" dateFormat="yy-mm-dd"></p-calendar>
+                <p-calendar formControlName="date" appendTo="body" dateFormat="yy-mm-dd" [showIcon]="true"></p-calendar>
             </p-inputGroup>
 
             <hr>

@@ -13,7 +13,7 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AbstractCrudComponent } from '../../../shared/abstract/abstract-crud/abstract-crud.component';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService, PrimeNGConfig } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
 import { CommonModule } from '@angular/common';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
@@ -67,7 +67,8 @@ export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionD
     protected override messageService: MessageService,
     private categoryService: CategoryService,
     private transactionService: TransactionService,
-    private accountService: AccountService) {
+    private accountService: AccountService,
+    private config: PrimeNGConfig) {
 
     super(formBuilder, confirmationService, messageService);
     this.accountId = 0;
@@ -80,6 +81,15 @@ export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionD
     this.sort = ["date,desc", "id,desc"];
     this.totalPages = 0;
     this.totalElements = 0;
+
+    this.config.setTranslation({
+      "dayNames": ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
+      "dayNamesShort": ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+      "dayNamesMin": ["Di", "Lu", "Mar", "Mer", "Je", "Ve", "Sa"],
+      "monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
+      "monthNamesShort": ["Jan", "Fev", "Mar", "Avr", "Mai", "Jun", "Jui", "Août", "Sept", "Oct", "Nov", "Dec"],
+      "firstDayOfWeek": 1,
+    });
   }
 
   ngOnInit(): void {
