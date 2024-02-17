@@ -21,6 +21,7 @@
                 <th pSortableColumn="name">Nom <p-sortIcon field="name"></p-sortIcon></th>
                 <th pSortableColumn="icon">Icone <p-sortIcon field="icon"></p-sortIcon></th>
                 <th pSortableColumn="color">Couleur <p-sortIcon field="color"></p-sortIcon></th>
+                <th pSortableColumn="main">Catégorie principale <p-sortIcon field="main"></p-sortIcon></th>
                 <th>Aperçu</th>
                 <th>Actions</th>
             </tr>
@@ -35,7 +36,11 @@
                 <td>{{ category.icon }}</td>
                 <td>{{ category.color }}</td>
                 <td>
-                    <app-shared-badge [icon]="category.icon" [text]="category.name" [color]="category.color">
+                    <p-inputSwitch [(ngModel)]="category.main" [disabled]="true"></p-inputSwitch>
+                </td>
+                <td>
+                    <app-shared-badge [icon]="category.icon" [text]="category.name" [color]="category.color"
+                        [main]="category.main">
                     </app-shared-badge>
                 </td>
                 <td>
@@ -77,6 +82,8 @@
                 <input pInputText placeholder="Couleur" formControlName="color">
             </p-inputGroup>
             <p-colorPicker formControlName="color" appendTo="body"></p-colorPicker>
+            <br>
+            Catégorie principale : <p-inputSwitch formControlName="main"></p-inputSwitch>
         </form>
     </ng-template>
 

@@ -11,6 +11,7 @@ data class Category(
 
     var name: String,
     var icon: String,
-    var color: String
+    var color: String,
+    var main: Boolean? = false
 
 )

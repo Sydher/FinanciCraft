@@ -1,0 +1,17 @@
+<p-toast></p-toast>
+<div class="card mb-5">
+    <form [formGroup]="formShortcut" class="mb-2">
+        <p-inputGroup>
+            <p-inputGroupAddon>
+                <i class="fa-solid fa-building-columns"></i>
+            </p-inputGroupAddon>
+            <input pInputText placeholder="Id du compte pour les raccourcis" formControlName="accountId">
+            <button pButton pRipple label="Sauvegarder" icon="pi pi-check" class="p-button-primary"
+                (click)="save()"></button>
+        </p-inputGroup>
+    </form>
+    <button pButton pRipple label="Recharger" icon="fa-solid fa-rotate" class="p-button-warning"
+        (click)="reloadShortcuts()"></button>&nbsp;
+    <button pButton pRipple label="Voir la config en cache" icon="fa-solid fa-magnifying-glass"
+        class="p-button-secondary" (click)="consult()"></button>
+</div>

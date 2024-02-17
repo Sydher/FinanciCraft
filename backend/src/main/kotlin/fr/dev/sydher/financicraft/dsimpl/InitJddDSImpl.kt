@@ -33,11 +33,11 @@ class InitJddDSImpl @Autowired constructor(
     fun initJdd() {
         log.info("Init JDD")
         // Categories
-        var c1 = Category(null, "Center", "pi pi-align-center", "#db3959")
+        var c1 = Category(null, "Center", "pi pi-align-center", "#db3959", true)
         c1 = categoryRepository.save(c1)
         var c2 = Category(null, "Up", "pi pi-angle-up", "green")
         c2 = categoryRepository.save(c2)
-        var c3 = Category(null, "Apple", "pi pi-apple", "#3030e6")
+        var c3 = Category(null, "Apple", "pi pi-apple", "#3030e6", true)
         c3 = categoryRepository.save(c3)
         var c4 = Category(null, "Arobase", "pi pi-at", "lightgrey")
         c4 = categoryRepository.save(c4)

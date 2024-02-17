@@ -18,6 +18,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { CommonModule } from '@angular/common';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { BadgeComponent } from '../../../shared/components/badge/badge.component';
+import { CONFIG_SHORTCUT_ACCOUNT_ID, CONFIG_SHORTCUT_TRANSACTIONS } from '../../../shared/utils/appconst';
 
 @Component({
   selector: 'app-accounts-details',
@@ -61,6 +62,7 @@ export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionD
   sort: Array<string>;
   totalPages: number;
   totalElements: number;
+  shortcuts: TransactionDTO[];
 
   constructor(protected override formBuilder: FormBuilder,
     protected override confirmationService: ConfirmationService,
@@ -81,6 +83,7 @@ export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionD
     this.sort = ["date,desc", "id,desc"];
     this.totalPages = 0;
     this.totalElements = 0;
+    this.shortcuts = [];
 
     this.config.setTranslation({
       "dayNames": ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
@@ -98,6 +101,13 @@ export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionD
     this.categoryService.getAllCategories().subscribe(response => {
       if (response.content) this.allCategories = response.content;
     });
+
+    // Load shortcuts
+    const shorcutAccount = localStorage.getItem(CONFIG_SHORTCUT_ACCOUNT_ID);
+    if (shorcutAccount && Number(shorcutAccount) !== this.accountId) {
+      const locals = localStorage.getItem(CONFIG_SHORTCUT_TRANSACTIONS);
+      this.shortcuts = locals ? JSON.parse(locals) : [];
+    }
   }
 
   protected override initForm(item?: TransactionDTO): FormGroup {
@@ -230,6 +240,11 @@ export class AccountsDetailsComponent extends AbstractCrudComponent<TransactionD
 
   recalculAccountBalance(): void {
     this.accountService.getAccountBalance(this.accountId).subscribe(responseBalance => { if (responseBalance.content) this.accountBalance = responseBalance.content });
+  }
+
+  createFromShortcut(item: TransactionDTO): void {
+    item.id = undefined;
+    this.openModal(item);
   }
 
 }
