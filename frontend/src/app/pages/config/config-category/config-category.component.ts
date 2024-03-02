@@ -8,10 +8,11 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { InputSwitchModule } from 'primeng/inputswitch';
 import { CardModule } from 'primeng/card';
 import { ApiModule, CategoryDTO, CategoryService } from '../../../apimodule';
 import { HttpClientModule } from '@angular/common/http';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { AbstractCrudComponent } from '../../../shared/abstract/abstract-crud/abstract-crud.component';
 import { ColorPickerModule } from 'primeng/colorpicker';
@@ -23,6 +24,7 @@ import { BadgeComponent } from '../../../shared/components/badge/badge.component
   imports: [
     HttpClientModule,
     ApiModule,
+    FormsModule,
     ReactiveFormsModule,
     ToastModule,
     ToolbarModule,
@@ -33,6 +35,7 @@ import { BadgeComponent } from '../../../shared/components/badge/badge.component
     InputTextModule,
     TableModule,
     ConfirmDialogModule,
+    InputSwitchModule,
     CardModule,
     ColorPickerModule,
     BadgeComponent,
@@ -64,6 +67,7 @@ export class ConfigCategoryComponent extends AbstractCrudComponent<CategoryDTO> 
       name: new FormControl(item?.name, [Validators.required]),
       icon: new FormControl(item?.icon, [Validators.required]),
       color: new FormControl(item?.color, [Validators.required]),
+      main: new FormControl(item?.main, []),
     });
   }
 
@@ -78,6 +82,7 @@ export class ConfigCategoryComponent extends AbstractCrudComponent<CategoryDTO> 
       name: this.formCrud.get("name")?.value,
       icon: this.formCrud.get("icon")?.value,
       color: this.formCrud.get("color")?.value,
+      main: this.formCrud.get("main")?.value,
     };
     this.categoryService.createCategory(category).subscribe(_ => {
       this.messageService.add({ severity: 'success', summary: 'OK', detail: 'Catégorie créée', life: 3000 });
@@ -91,6 +96,7 @@ export class ConfigCategoryComponent extends AbstractCrudComponent<CategoryDTO> 
       name: this.formCrud.get("name")?.value,
       icon: this.formCrud.get("icon")?.value,
       color: this.formCrud.get("color")?.value,
+      main: this.formCrud.get("main")?.value,
     };
     this.categoryService.updateCategory(category, `${category.id}`).subscribe(_ => {
       this.messageService.add({ severity: 'success', summary: 'OK', detail: 'Catégorie modifiée', life: 3000 });

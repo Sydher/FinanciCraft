@@ -58,13 +58,13 @@
         <form [formGroup]="formCrud">
             <p-inputGroup>
                 <p-inputGroupAddon>
-                    <i class="pi pi-user-edit"></i>
+                    <i class="pi pi-file-edit"></i>
                 </p-inputGroupAddon>
                 <input pInputText placeholder="name" formControlName="name">
             </p-inputGroup>
             <p-inputGroup>
                 <p-inputGroupAddon>
-                    <i class="pi pi-table"></i>
+                    <i class="fa-solid fa-layer-group"></i>
                 </p-inputGroupAddon>
                 <p-autoComplete formControlName="categoryId" [suggestions]="filteredCategories"
                     (completeMethod)="filterCategory($event)" field="name" [style]="{'width':'100%'}"

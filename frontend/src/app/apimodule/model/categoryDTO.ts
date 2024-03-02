@@ -15,4 +15,5 @@ export interface CategoryDTO {
     name: string;
     icon: string;
     color: string;
+    main?: boolean;
 }

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
+import kotlin.math.round
 
 @Service
 class AccountDSImpl @Autowired constructor(
@@ -32,7 +33,7 @@ class AccountDSImpl @Autowired constructor(
             val account = optionalAccount.get()
             val dto = account.toDTO()
             try {
-                dto.balance = transactionRepository.sumAmountByAccount(account)
+                dto.balance = round(transactionRepository.sumAmountByAccount(account) * 100.0) / 100.0
             } catch (e: EmptyResultDataAccessException) {
                 dto.balance = 0.0
             }

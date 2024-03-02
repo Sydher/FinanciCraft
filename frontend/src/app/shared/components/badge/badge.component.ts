@@ -12,11 +12,13 @@ export class BadgeComponent {
   @Input() icon: string;
   @Input() text: string;
   @Input() color: string;
+  @Input() main?: boolean;
 
   constructor() {
     this.icon = "";
     this.text = "";
     this.color = "";
+    this.main = false;
   }
 
 }
