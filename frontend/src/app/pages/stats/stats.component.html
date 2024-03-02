@@ -1,3 +1,44 @@
-<div class="card">
-    <p-chart type="pie" [data]="data" [options]="options" width="400" height="400"></p-chart>
+<h1>Statistiques</h1>
+
+<h2>
+    <i class="fa-solid fa-star"></i>
+    Catégories principales
+</h2>
+
+<div class="card flex justify-content-center mb-3">
+    <p-card>
+        <form [formGroup]="formSearch" class="mb-5">
+            <p-inputGroup>
+                <p-inputGroupAddon>
+                    <i class="fa-solid fa-layer-group"></i>
+                </p-inputGroupAddon>
+                <p-autoComplete formControlName="accountId" [suggestions]="filteredAccounts"
+                    (completeMethod)="filterAccounts($event)" field="name" [style]="{'width':'100%'}"
+                    [inputStyle]="{'width':'100%'}" appendTo="body" [dropdown]="true"></p-autoComplete>
+            </p-inputGroup>
+            <p-inputGroup>
+                <p-inputGroupAddon>
+                    <i class="pi pi-calendar-plus"></i>
+                </p-inputGroupAddon>
+                <p-calendar formControlName="dateMin" appendTo="body" dateFormat="yy-mm-dd"
+                    [showIcon]="true"></p-calendar>
+            </p-inputGroup>
+            <p-inputGroup>
+                <p-inputGroupAddon>
+                    <i class="pi pi-calendar-plus"></i>
+                </p-inputGroupAddon>
+                <p-calendar formControlName="dateMax" appendTo="body" dateFormat="yy-mm-dd"
+                    [showIcon]="true"></p-calendar>
+            </p-inputGroup>
+
+            <button pButton pRipple label="Calculer" icon="fa-solid fa-calculator" class="p-button-primary"
+                (click)="calcul()"></button>
+        </form>
+
+        <p-chart type="pie" [data]="data" [options]="options" width="400" height="400"></p-chart>
+    </p-card>
 </div>
+
+
+
+<hr class="mt-5 mb-5">

@@ -17,6 +17,7 @@ class AppConst {
         const val SWAGGER_TAG_ACCOUNT = "Account"
         const val SWAGGER_TAG_CATEGORY = "Category"
         const val SWAGGER_TAG_TRANSACTION = "Transaction"
+        const val SWAGGER_TAG_STATS = "Statistics"
     }
 
 }

@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { AccountService } from './api/account.service';
 import { CategoryService } from './api/category.service';
+import { StatisticsService } from './api/statistics.service';
 import { TransactionService } from './api/transaction.service';
 
 @NgModule({
@@ -14,6 +15,7 @@ import { TransactionService } from './api/transaction.service';
   providers: [
     AccountService,
     CategoryService,
+    StatisticsService,
     TransactionService ]
 })
 export class ApiModule {

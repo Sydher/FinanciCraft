@@ -9,9 +9,8 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { StatByCategoryDTO } from './statByCategoryDTO';
 
-export interface SortObject { 
-    empty?: boolean;
-    unsorted?: boolean;
-    sorted?: boolean;
+export interface StatsByCategoryDTO { 
+    stats: Array<StatByCategoryDTO>;
 }
